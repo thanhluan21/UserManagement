@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace UserManagement.Model
 {
-    public class DbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbContext(DbContextOptions<DbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)

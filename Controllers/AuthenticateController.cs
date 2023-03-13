@@ -15,8 +15,8 @@ using UserManagement.Model;
 
 namespace UserManagement.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
+    [Microsoft.AspNetCore.Mvc.Route("routing/authenticate")]
     public class AuthenticateController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -32,8 +32,15 @@ namespace UserManagement.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
         }
-
+        /// <summary>
+        /// Insert costtemplate 
+        /// Method: POST
+        /// Url: routing/login
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
@@ -62,8 +69,15 @@ namespace UserManagement.Controllers
             }
             return Unauthorized();
         }
-
+        /// <summary>
+        /// Insert costtemplate 
+        /// Method: POST
+        /// Url: routing/Register
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
@@ -82,8 +96,15 @@ namespace UserManagement.Controllers
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
-
+        /// <summary>
+        /// Insert costtemplate 
+        /// Method: POST
+        /// Url: routing/RegisterAdmin
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("RegisterAdmin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
