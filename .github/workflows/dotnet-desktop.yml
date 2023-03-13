@@ -48,7 +48,7 @@ jobs:
         run: export PATH="$PATH:/root/.dotnet/tools"
       - name: Package Lambda
         run: dotnet lambda package --configuration Release --framework net6.0 --output-package bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip --msbuild-parameters "/p:PublishReadyToRun=true --self-contained false"
-        working-directory: ./UserMgt
+        working-directory: ./UserManagement
       - name: promote-changelog
         run: |
           sed -i -e "s/^  version:.*/  version: ${{ steps.tag_version.outputs.new_version }}/" serverless.yml
