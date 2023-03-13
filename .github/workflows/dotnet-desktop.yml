@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  push:
+    branches: 
+      - master
+    # paths-ignore:
+    #   - "charts/**"
+
+env:
+  PROJECT: DATN # {"$kpt-set":"project"}
+  REPO_NAME: UserManagement # {"$kpt-set":"app"}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: '0'
+      - name: Bump version and push tag dry-run
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.1
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          dry_run: true
+          release_branches: develop
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Authenticate to Infodation Github Packages
+        run: dotnet nuget add source https://nuget.pkg.github.com/infodation/index.json -n github --username ${{ secrets.NUGET_USER }} --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
+      - name: Install dependencies
+        run: dotnet restore --locked-mode
+      - name: Build
+        run: dotnet build --no-restore -c Release
+      - name: Test
+        run: dotnet test --no-build --verbosity normal -c Release
+      - name: Install Amazon Lambda Tools
+        run: dotnet tool install -g Amazon.Lambda.Tools --framework net6.0 && dotnet tool update -g Amazon.Lambda.Tools
+      - name: Export Path for Lambda Tools
+        run: export PATH="$PATH:/root/.dotnet/tools"
+      - name: Package Lambda
+        run: dotnet lambda package --configuration Release --framework net6.0 --output-package bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip --msbuild-parameters "/p:PublishReadyToRun=true --self-contained false"
+        working-directory: ./UserMgt
+      - name: promote-changelog
+        run: |
+          sed -i -e "s/^  version:.*/  version: ${{ steps.tag_version.outputs.new_version }}/" serverless.yml
+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -a -m "chore: release ${{ steps.tag_version.outputs.new_version }}" --allow-empty
+          git tag -fa ${{ steps.tag_version.outputs.new_tag }} -m "Release version ${{ steps.tag_version.outputs.new_version }}"
+          git push origin ${{ steps.tag_version.outputs.new_tag }}
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: serverless deploy
+        uses: serverless/github-action@master
+        with:
+          args: -c "serverless plugin install --name serverless-apigateway-route-settings && serverless deploy --stage dev"
+          entrypoint: /bin/sh
+       # env:
+         # AWS_ACCESS_KEY_ID: ${{ secrets.ROUTING3_DEV_AWS_ACCESS_KEY_ID }}
+         # AWS_SECRET_ACCESS_KEY: ${{ secrets.ROUTING3_DEV_AWS_SECRET_ACCESS_KEY }}
+         # DB_USER: ${{ secrets.ROUTING3_DEV_DB_USER }}
+         # DB_PASSWORD: ${{ secrets.ROUTING3_DEV_DB_PASSWORD }}
+         # DB_HOST: ${{ secrets.ROUTING3_DEV_DB_HOST }}
+
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ROUTING3_DEV_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ROUTING3_DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      
+      - name: Push Function zip package to S3
+        run: |
+          aws s3 cp UserMgt/bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip s3://routing2-lambda-packages
