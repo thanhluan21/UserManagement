@@ -36,8 +36,6 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Authenticate to Infodation Github Packages
-        run: dotnet nuget add source https://nuget.pkg.github.com/infodation/index.json -n github --username ${{ secrets.NUGET_USER }} --password ${{ secrets.NUGET_TOKEN }} --store-password-in-clear-text
       - name: Install dependencies
         run: dotnet restore --locked-mode
       - name: Build
