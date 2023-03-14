@@ -72,9 +72,9 @@ jobs:
         with:
           args: -c "serverless plugin install --name serverless-apigateway-route-settings && serverless deploy --stage dev"
           entrypoint: /bin/sh
-       # env:
-         # AWS_ACCESS_KEY_ID: ${{ secrets.ROUTING3_DEV_AWS_ACCESS_KEY_ID }}
-         # AWS_SECRET_ACCESS_KEY: ${{ secrets.ROUTING3_DEV_AWS_SECRET_ACCESS_KEY }}
+      - env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESSKEYAWS }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ACCESSKEYAWS }}
          # DB_USER: ${{ secrets.ROUTING3_DEV_DB_USER }}
          # DB_PASSWORD: ${{ secrets.ROUTING3_DEV_DB_PASSWORD }}
          # DB_HOST: ${{ secrets.ROUTING3_DEV_DB_HOST }}
@@ -82,8 +82,8 @@ jobs:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.ROUTING3_DEV_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ROUTING3_DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.ACCESSKEYAWS }}
+          aws-secret-access-key: ${{ secrets.ACCESSKEYAWS }}
           aws-region: eu-central-1
       
       - name: Push Function zip package to S3
