@@ -104,11 +104,9 @@ functions:
     # you can add packaging information here
     vpc: # Optional VPC. But if you use VPC then both subproperties (securityGroupIds and subnetIds) are required
       securityGroupIds:
-        - sg-819725fa
+        - sg-067d40de060df307c
       subnetIds:
-        - subnet-0f39b065
-        - subnet-77b8723b
-        - subnet-909453ec
+        - subnet-077f37866a4983b96
     package:
       artifact: bin/Release/net6.0/UserManagement-dev-${self:custom.version}.zip
     timeout: 20
