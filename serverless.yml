@@ -110,7 +110,7 @@ functions:
         - subnet-77b8723b
         - subnet-909453ec
     package:
-      artifact: /bin/Release/net6.0/UserManagement-${self:custom.version}.zip
+      artifact: /bin/Release/netcoreapp3.1/UserManagement-${self:custom.version}.zip
     timeout: 20
     #provisionedConcurrency: 10 # optional, Count of provisioned lambda instances
     #reservedConcurrency: 20 # optional, reserved concurrency limit for this function. By default, AWS uses account concurrency limit
