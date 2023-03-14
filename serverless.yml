@@ -130,13 +130,16 @@ functions:
           path: /swagger/swagger-ui-standalone-preset.js
       - httpApi:
           method: POST
-          path: routing/authenticate/login
+          path: /routing/authenticate
       - httpApi:
           method: POST
-          path: routing/authenticate/Register
+          path: /routing/authenticate/login
       - httpApi:
           method: POST
-          path: routing/authenticate/RegisterAdmin
+          path: /routing/authenticate/Register
+      - httpApi:
+          method: POST
+          path: /routing/authenticate/RegisterAdmin
 
       # - httpApi:
       #     method: POST
