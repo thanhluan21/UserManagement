@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT: CDTN # {"$kpt-set":"project"}
-  REPO_NAME: UserManagement # {"$kpt-set":"app"}
+  REPO_NAME: UserManagement-dev # {"$kpt-set":"app"}
 
 jobs:
   main:
