@@ -89,7 +89,7 @@ package:
 functions:
   UserManagement-dev:
     handler: UserManagement::UserManagement.LambdaEntryPoint::FunctionHandlerAsync
-    memorySize: 3072
+    # memorySize: 3072
     environment:
       DB_HOST: ''
       DB_NAME: ''
