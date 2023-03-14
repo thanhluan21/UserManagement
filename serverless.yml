@@ -35,9 +35,23 @@ provider:
   #   httpApi: true
   httpApi:
     payload: '1.0' #Or use 1.0
-    id: 
-      Fn::ImportValue: sls-routing3-launcher-reporter-service-dev-HttpApiId
-
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        - "s3:*"
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref" : "ServerlessDeploymentBucket"
+            - "/*"  
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
