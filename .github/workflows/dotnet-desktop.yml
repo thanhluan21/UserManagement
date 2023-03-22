@@ -81,9 +81,9 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.ACCESSKEYAWS }}
-          aws-secret-access-key: ${{ secrets.ACCESSKEYAWS }}
+          aws-secret-access-key: ${{ secrets.SECRETACCESSKEY }}
           aws-region: eu-central-1
       
       - name: Push Function zip package to S3
         run: |
-          aws s3 cp UserMgt/bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip s3://routing2-lambda-packages
+          aws s3 cp UserMgt/bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip s3://user-packages
