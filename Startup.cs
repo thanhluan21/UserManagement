@@ -34,7 +34,7 @@ namespace UserManagement
         {
             services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=60136048;"));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=admin;"));
             services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
