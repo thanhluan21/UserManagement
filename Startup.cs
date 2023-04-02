@@ -116,6 +116,9 @@ namespace UserManagement
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping API V1");
             });
+
+
+            InitializeDatabase(app);
             app.UseHttpsRedirection();
             app.UseAuthentication();
 
@@ -131,6 +134,22 @@ namespace UserManagement
                     await context.Response.WriteAsync("Welcome to running ASP.NET Core on AWS Lambda");
                 });
             });
+        }
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            try
+            {
+                using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
     }
 }
