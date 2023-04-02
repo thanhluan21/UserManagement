@@ -140,6 +140,13 @@ functions:
       - httpApi:
           method: POST
           path: /routing/authenticate/RegisterAdmin
+     - httpApi:
+          method: POST
+          path: /routing/product
+      - httpApi:
+          method: POST
+          path: /routing/product/create
+
 
       # - httpApi:
       #     method: POST
