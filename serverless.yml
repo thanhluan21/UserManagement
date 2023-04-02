@@ -106,7 +106,9 @@ functions:
       securityGroupIds:
         - sg-067d40de060df307c
       subnetIds:
-        - subnet-077f37866a4983b96
+        - subnet-0dfeb4858abc763e3
+        - subnet-00ed6dff2ee25ec3e
+        - subnet-046c66898cb14cf60
     package:
       artifact: bin/Release/net6.0/UserManagement-dev-${self:custom.version}.zip
     timeout: 20
