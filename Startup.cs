@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using UserManagement.Model;
+using UserManagement.Services.Products;
 
 namespace UserManagement
 {
@@ -32,6 +33,7 @@ namespace UserManagement
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IProduct, Product>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=admin;"));
@@ -52,8 +54,8 @@ namespace UserManagement
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = Environment.GetEnvironmentVariable("JWT:ValidAudience"),
-                    ValidIssuer = Environment.GetEnvironmentVariable("JWT:ValidIssuer"),
+                    ValidAudience = "http://localhost:4200",
+                    ValidIssuer = "http://localhost:5000",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JWTAuthenticationHIGHsecuredPasswordVVVp1OH7Xzyr"))
                 };
             });

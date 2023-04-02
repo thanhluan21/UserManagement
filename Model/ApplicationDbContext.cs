@@ -13,8 +13,10 @@ namespace UserManagement.Model
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+        public DbSet<ProductModel> productModels { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ProductModel>().ToTable("product");
             base.OnModelCreating(builder);
         }
     }
