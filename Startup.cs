@@ -36,8 +36,10 @@ namespace UserManagement
             services.AddTransient<IProduct, Product>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
-            /*services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=admin;"));*/
+            /*            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=admin;"));
+            */
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=database-1.cedtnzzls4yb.eu-central-1.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=60136048;"));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
