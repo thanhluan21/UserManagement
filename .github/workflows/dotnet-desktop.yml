@@ -86,4 +86,4 @@ jobs:
       
       - name: Push Function zip package to S3
         run: |
-          aws s3 cp UserManagement/bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip s3://user-packages
+          aws s3 cp bin/Release/net6.0/${{ env.REPO_NAME }}-${{ steps.tag_version.outputs.new_version }}.zip s3://user-packages
