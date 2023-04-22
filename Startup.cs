@@ -33,11 +33,21 @@ namespace UserManagement
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
             services.AddTransient<IProduct, Product>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
-            /* services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=admin;"));*/
-
+            /*            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=localhost;Port=5432;Database=UserMgt;User Id=postgres;Password=60136048;"));//admin
+            */
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("Server=database-1.cedtnzzls4yb.eu-central-1.rds.amazonaws.com;Port=5432;Database=postgres;User Id=postgres;Password=60136048;"));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -113,6 +123,7 @@ namespace UserManagement
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowAll");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
