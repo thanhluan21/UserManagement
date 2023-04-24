@@ -21,7 +21,7 @@ service: users-service-1
 frameworkVersion: '3'
 
 custom:
-  version: ${env:VERSION}
+  version: 0.0.38-master.0
 
 plugins:
   - serverless-apigateway-route-settings
