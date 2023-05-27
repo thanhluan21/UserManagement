@@ -35,6 +35,14 @@ namespace UserManagement.Services.Products
             throw new System.NotImplementedException();
         }
 
+        public async Task<ProductModel> Get(int id)
+        {
+            var productExist =  _dbcontext.productModels.FirstOrDefault(c => c.Id == id);
+            if (productExist == null)
+                return null;
+            return productExist;
+        }
+
         public Task<Product> Update(int id)
         {
             throw new System.NotImplementedException();

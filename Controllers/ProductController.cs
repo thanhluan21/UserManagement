@@ -35,5 +35,17 @@ namespace UserManagement.Controllers
             }
             return Ok(product);
         }
+
+        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.Route("Get")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var product = await _product.Get(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
     }
 }

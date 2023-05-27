@@ -8,6 +8,7 @@ namespace UserManagement.Services.Products
     {
         Task<ProductModel> Create(ProductDTO productDTO);
         Task<Product> Update(int id);
+        Task<ProductModel> Get(int id);
         bool Delete();
     }
 }
