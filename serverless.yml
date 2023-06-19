@@ -148,9 +148,7 @@ functions:
       - httpApi:
           method: POST
           path: /routing/product/Create
-      - httpApi:
-          method: GET
-          path: /routing/product/Get
+
 
       # - httpApi:
       #     method: POST
